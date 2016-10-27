@@ -2,7 +2,7 @@ import datetime
 from django.utils import timezone
 from django.test import TestCase
 from django.urls import reverse
-from .models import Question
+from .models import Question, Choice
 
 
 def create_question(question_text, days):
@@ -13,6 +13,24 @@ def create_question(question_text, days):
     """
     time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
+
+
+def create_choice(question_obj, text):
+    """
+    Creates a new choice for a question_object
+    """
+    choice = Choice.objects.create(question=question_obj, choice_text=text)
+    return choice
+
+
+class ChoiceViewTests(TestCase):
+    def test_choice_text(self):
+        """
+        Tests that a choice object returns choice_text attriburte
+        """
+        question = create_question(question_text="Choice question.", days=1)
+        choice = create_choice(question, "Test Choice")
+        self.assertTrue(choice == "Test Choice")
 
 
 class QuestionViewTests(TestCase):
