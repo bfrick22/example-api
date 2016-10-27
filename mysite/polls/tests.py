@@ -23,6 +23,17 @@ def create_choice(question_obj, text):
     return choice
 
 
+class VoteTests(TestCase):
+    def test_vote(self):
+        """
+        Tests that vote funtion can vote.
+        """
+        question = create_question(question_text="Vote question.", days=1)
+        choice = create_choice(question, "Vote choice 1")
+        data_d = {}
+        response = self.client.post(reverse('polls:vote'), data_d)
+
+
 class ChoiceViewTests(TestCase):
     def test_choice_text(self):
         """
