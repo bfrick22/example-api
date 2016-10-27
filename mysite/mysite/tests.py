@@ -25,4 +25,4 @@ class QuestionViewTests(TestCase):
         self.assertTrue(status_code == 200, 'Request failed with status code {0} message {1}'.format(status_code,
                                                                                                      str(resp_d)))
         self.assertTrue(list(api_contract_l) == resp_d.keys(), 'Expected {0} received {1}'.format(api_contract_l,
-                                                                                                 resp_d.keys()))
+                                                                                                  resp_d.keys()))
