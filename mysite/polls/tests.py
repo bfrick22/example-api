@@ -80,8 +80,6 @@ class QuestionViewTests(TestCase):
         self.assertTrue(q.was_published_recently(), "Failed to validate recently published")
 
 
-
-
 class QuestionIndexDetailTests(TestCase):
     def test_detail_view_with_a_future_question(self):
         """
