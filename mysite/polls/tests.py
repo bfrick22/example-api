@@ -30,7 +30,7 @@ class ChoiceViewTests(TestCase):
         """
         question = create_question(question_text="Choice question.", days=1)
         choice = create_choice(question, "Test Choice")
-        self.assertTrue(choice == "Test Choice")
+        self.assertTrue(str(choice) == "Test Choice")
 
 
 class QuestionViewTests(TestCase):
