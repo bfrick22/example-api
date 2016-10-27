@@ -72,6 +72,15 @@ class QuestionViewTests(TestCase):
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
 
+    def test_was_published_recently(self):
+        """
+        Tests if was_published_recently funtion on model
+        """
+        q = create_question(question_text="Recent question 1.", days=0)
+        self.assertTrue(q.was_published_recently(), "Failed to validate recently published")
+
+
+
 
 class QuestionIndexDetailTests(TestCase):
     def test_detail_view_with_a_future_question(self):
