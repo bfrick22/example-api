@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.utils import timezone
 from django.test import TestCase
 from django.urls import reverse
@@ -30,8 +31,16 @@ class VoteTests(TestCase):
         """
         question = create_question(question_text="Vote question.", days=1)
         choice = create_choice(question, "Vote choice 1")
-        data_d = {}
-        response = self.client.post(reverse('polls:vote'), data_d)
+        url_params = {'question_id': question.id}
+        data_d = {'choice': choice.id}
+        expected_url = reverse('polls:results', kwargs={'pk': question.id})
+        response = self.client.post(reverse('polls:vote', kwargs=url_params), data_d)
+        self.assertRedirects(response, expected_url)
+
+        # test bad choice
+        data_d = {'choice': -42}
+        response = self.client.post(reverse('polls:vote', kwargs=url_params), data_d)
+        self.assertTrue(response.status_code == 200)
 
 
 class ChoiceViewTests(TestCase):
