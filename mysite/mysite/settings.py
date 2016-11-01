@@ -135,3 +135,8 @@ REST_FRAMEWORK = {
 
 # API contract
 ROOT_API_CONTRACT = ('users', 'groups')
+
+
+# debug
+if DEBUG:
+    pass
