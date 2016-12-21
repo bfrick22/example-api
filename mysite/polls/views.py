@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404, render
-from django.template import loader
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse
 from django.utils import timezone
 from .models import Choice, Question
+
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -34,6 +34,7 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

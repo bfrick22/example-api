@@ -1,9 +1,9 @@
 import datetime
-
+import json
 from django.utils import timezone
 from django.test import TestCase
 from django.urls import reverse
-from .models import Question
+from .models import Question, Choice
 
 
 def create_question(question_text, days):
@@ -14,6 +14,43 @@ def create_question(question_text, days):
     """
     time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
+
+
+def create_choice(question_obj, text):
+    """
+    Creates a new choice for a question_object
+    """
+    choice = Choice.objects.create(question=question_obj, choice_text=text)
+    return choice
+
+
+class VoteTests(TestCase):
+    def test_vote(self):
+        """
+        Tests that vote funtion can vote.
+        """
+        question = create_question(question_text="Vote question.", days=1)
+        choice = create_choice(question, "Vote choice 1")
+        url_params = {'question_id': question.id}
+        data_d = {'choice': choice.id}
+        expected_url = reverse('polls:results', kwargs={'pk': question.id})
+        response = self.client.post(reverse('polls:vote', kwargs=url_params), data_d)
+        self.assertRedirects(response, expected_url)
+
+        # test bad choice
+        data_d = {'choice': -42}
+        response = self.client.post(reverse('polls:vote', kwargs=url_params), data_d)
+        self.assertTrue(response.status_code == 200)
+
+
+class ChoiceViewTests(TestCase):
+    def test_choice_text(self):
+        """
+        Tests that a choice object returns choice_text attriburte
+        """
+        question = create_question(question_text="Choice question.", days=1)
+        choice = create_choice(question, "Test Choice")
+        self.assertTrue(str(choice) == "Test Choice")
 
 
 class QuestionViewTests(TestCase):
@@ -72,6 +109,13 @@ class QuestionViewTests(TestCase):
             response.context['latest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
+
+    def test_was_published_recently(self):
+        """
+        Tests if was_published_recently funtion on model
+        """
+        q = create_question(question_text="Recent question 1.", days=0)
+        self.assertTrue(q.was_published_recently(), "Failed to validate recently published")
 
 
 class QuestionIndexDetailTests(TestCase):

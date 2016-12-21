@@ -15,8 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
+from .views import UserViewSet
+
+router_v1 = routers.DefaultRouter()
+router_v1.register(r'users', UserViewSet)
+
+# swagger documentation
+schema_view = get_schema_view(title='API', renderer_classes=[OpenAPIRenderer,
+                                                             SwaggerUIRenderer])
 
 urlpatterns = [
+    url(r'^$', schema_view, name="docs"),
     url(r'^admin/', admin.site.urls),
     url(r'^polls/', include('polls.urls')),
+    url(r'^api/v1/', include(router_v1.urls)),
+    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

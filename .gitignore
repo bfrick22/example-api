@@ -3,11 +3,19 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+.DS_Store
+
+# code coverage
+coverage_html
+
 # django
 */db.sqlite3
 
 # C extensions
 *.so
+
+# pycharm shit
+.idea
 
 # Distribution / packaging
 .Python

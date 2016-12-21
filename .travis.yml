@@ -1,9 +1,11 @@
 language: python
 python:
   - "2.7"
-  - "3.5"
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
 script: 
-  - python mysite/manage.py test polls
+  - python mysite/manage.py test mysite polls
+  - coverage run --source='.' mysite/manage.py test mysite polls
+  - coverage report -m
+  - coverage html -d coverage_html
